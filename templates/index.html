@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitamin Deficiency Assessment</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --border-color: #000000;
+            --accent-color: #000000;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            width: 100%;
+            padding: 2rem 0;
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        .upload-card {
+            border: 2px solid var(--border-color);
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .upload-card h2 {
+            margin-top: 0;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        input[type="file"] {
+            font-size: 1rem;
+            padding: 10px;
+            border: 1px dashed var(--border-color);
+            width: 100%;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+        button {
+            background-color: var(--text-color);
+            color: var(--bg-color);
+            border: 2px solid var(--border-color);
+            padding: 0.75rem 2rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .flash-messages {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 2rem 0;
+            width: 100%;
+        }
+
+        .flash-messages li {
+            border: 2px solid var(--border-color);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .results {
+            border: 2px solid var(--border-color);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .results h2 {
+            margin-top: 0;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .prediction {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 1.5rem 0;
+            text-align: center;
+            text-transform: uppercase;
+            border: 2px solid var(--border-color);
+            padding: 1rem;
+        }
+
+        .recommendation {
+            font-size: 1.1rem;
+        }
+
+        .metrics {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Vision-Based Vitamin Deficiency Assessment</h1>
+    </header>
+
+    <div class="container">
+        
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class="flash-messages">
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+        <div class="upload-card">
+            <h2>Upload Image</h2>
+            <p>Upload an image of a tongue, nail, eye (conjunctiva), or skin for assessment.</p>
+            <form action="/" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" accept="image/*" required>
+                <button type="submit">Analyze</button>
+            </form>
+        </div>
+
+        {% if prediction %}
+        <div class="results">
+            <h2>Analysis Results</h2>
+            <div class="prediction">
+                Diagnosis: {{ prediction }}
+            </div>
+            <div class="recommendation">
+                <strong>Dietary Recommendation:</strong><br>
+                {{ recommendation }}
+            </div>
+            <div class="metrics">
+                <strong>Metrics Extracted:</strong> {{ features_extracted }} dimensional feature vector
+                (Colour, Texture, and Shape descriptors)
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+</body>
+</html>
